@@ -7,7 +7,7 @@ export const AppReducer = (state, action) => {
     switch (action.type) {
         case "ADD_EXP":
             let total_budget = 0;
-            total_budget = state.expenses.reduce((total, item) => {return (total += item.cost)},0);
+            total_budget = state.expenses.reduce((prev, curr) => {return (prev + curr.cost)},0);
             total_budget += action.payload.cost;
 
             action.type = "DONE";
@@ -17,7 +17,7 @@ export const AppReducer = (state, action) => {
                 total_budget = 0;
 
                 state.expenses.map((currExp) => {
-                    if (currExp.name === action.payload.name) {
+                    if (currExp.id === action.payload.id) {
                         currExp.cost += action.payload.cost;
                     };
                     return currExp;
@@ -31,7 +31,7 @@ export const AppReducer = (state, action) => {
 
         case "RED_EXP":
             const exp_reduced = state.expenses.map((currExp) => {
-                if (currExp.name === action.payload.name && currExp.cost - action.payload.cost >= 0) {
+                if (currExp.id === action.payload.id && currExp.cost - action.payload.cost >= 0) {
                     currExp.cost =- action.payload.cost;
                     budget = state.budget - action.payload.cost;
                 } else if (currExp.cost - action.payload.cost < 0) {
@@ -50,7 +50,7 @@ export const AppReducer = (state, action) => {
         case "DEL_EXP":
             action.type = "DONE";
             state.expenses.map((currExp) => {
-                if (currExp.name === action.payload) {
+                if (currExp.id === action.payload) {
                     budget = state.budget + currExp.cost;
                     currExp.cost = 0;
                 }
@@ -63,14 +63,14 @@ export const AppReducer = (state, action) => {
             };
 
         case "SET_BUDGET":
-            action.payload.type ="DONE";
+            action.type ="DONE";
 
             state.budget = action.payload;
 
             return {...state,};
 
         case "CHG_CURR":
-            action.payload.type = "DONE";
+            action.type = "DONE";
 
             state.currency = action.payload;
 
@@ -103,7 +103,7 @@ export const Provider = (props) => {
     let remaining = 0;
 
     if (state.expenses) {
-        const totalExp = state.expenses.reduce((total, item) => {return (total+=item.cost)});
+        const totalExp = state.expenses.reduce((total, item) => {return (total += item.cost)},0);
         remaining = state.budget - totalExp;
     }
 

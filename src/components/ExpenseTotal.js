@@ -10,7 +10,7 @@ const ExpenseTotal = () => {
     return (
         <div className="col">
             <div className="alert alert-danger">
-                Spent: {currency}{total_exp}
+                Spent: {currency} {total_exp}
             </div>
         </div>
     )

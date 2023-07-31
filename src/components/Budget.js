@@ -7,8 +7,7 @@ const Budget = () => {
   return (
     <div className="col">
       <div className="alert alert-secondary">
-        Current budget: {currency}
-        {budget}
+        Current budget: {currency} {budget}
       </div>
     </div>
   );
